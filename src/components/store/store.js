@@ -1,10 +1,10 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import TodoSlice from "./slices/TodoSlice";
 import BackgroundSlice from "./slices/BackgroundSlice";
+import TaskSlice from "./slices/TaskSlice";
 
 const rootReduser = combineReducers({
-    todo: TodoSlice,
     backgroundImage: BackgroundSlice,
+    task: TaskSlice,
 })
 
 export const store = configureStore({
