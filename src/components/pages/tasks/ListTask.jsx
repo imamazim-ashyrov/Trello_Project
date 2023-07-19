@@ -1,26 +1,28 @@
 import React, { useState } from "react";
 import AddTask from "./AddTask";
 import { styled } from "styled-components";
+import { useSelector } from "react-redux";
 
 const ListTasks = () => {
 
+  const {tasks} = useSelector(state => state.task)
   const [inputActive, setInputActive] = useState(false)
+  console.log(inputActive);
 
   const inputFalse = () => {
+    setInputActive(false)
+  }
+  const inputTrue = () => {
     setInputActive(true)
   }
 
-  const inputTrue = () => {
-    setInputActive(false)
-  }
-
-  const as = () => {
-    inputTrue()
+  const clickHandler = () => {
+    inputFalse()
   }
 
   return (
-    <WrapperTasks onClick={as}>
-      <AddTask inputTrue = {inputTrue} inputActive={inputActive}/>
+    <WrapperTasks onClick={clickHandler}>
+        <AddTask inputTrue = {inputTrue} inputActive={inputActive}/>
     </WrapperTasks>
   );
 };

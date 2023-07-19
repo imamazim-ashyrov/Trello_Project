@@ -5,9 +5,7 @@ import { useSelector } from 'react-redux'
 import { styled } from 'styled-components'
 
 const Home = () => {
-
   const url = useSelector(state => state.backgroundImage)
-  console.log(url);
 
   return (
     <Wrapper url = {url}>

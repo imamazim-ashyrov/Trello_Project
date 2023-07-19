@@ -1,23 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  data: [
-
-  ],
+  tasks: [],
 };
 
 const TaskSlice = createSlice({
   name: "task",
   initialState,
   reducers: {
-    addTodo: (state, action) => {
-      state.data = [...state.data, action.payload];
+    addTask: ( state, action) => {
+      console.log(action);
+      state.tasks = [...state.tasks, action.payload];
     },
-    deleteTodo: (state, action) => {
-      state.data = state.data.filter((el) => el.id !== action.payload);
+    addInnerTask: (state, action) => {
+      const { id, innerTask } = action.payload;
+      const find = state.tasks.find((el) => el.id === id);
+      find.innerTask = [...find.innerTask, innerTask];
     },
   },
 });
 
-export const { addTodo, deleteTodo } = TaskSlice.actions;
+export const { addTask, addInnerTask } = TaskSlice.actions;
 export default TaskSlice.reducer;
