@@ -3,24 +3,26 @@ import AddTask from "./AddTask";
 import { styled } from "styled-components";
 
 const ListTasks = () => {
-
-  const [inputActive, setInputActive] = useState(false)
-  console.log(inputActive);
+  const [inputActive, setInputActive] = useState(false);
 
   const inputFalse = () => {
-    setInputActive(false)
-  }
+    setInputActive(false);
+  };
   const inputTrue = () => {
-    setInputActive(true)
-  }
+    setInputActive(true);
+  };
 
   const clickHandler = () => {
-    inputFalse()
-  }
+    inputFalse();
+  };
 
   return (
     <WrapperTasks onClick={clickHandler}>
-        <AddTask inputFalse={inputFalse} inputTrue = {inputTrue} inputActive={inputActive}/>
+      <AddTask
+        inputFalse={inputFalse}
+        inputTrue={inputTrue}
+        inputActive={inputActive}
+      />
     </WrapperTasks>
   );
 };
@@ -34,4 +36,4 @@ const WrapperTasks = styled.div`
   padding: 30px;
   height: calc(100% - 119px);
   overflow-x: scroll;
-`
+`;

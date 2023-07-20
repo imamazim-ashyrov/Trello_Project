@@ -3,10 +3,13 @@ import BackgroundImg from "../../assets/images/BackgroundImg.jpg";
 
 const BackgrounSlice = createSlice({
   name: "backgroundImage",
-  initialState: BackgroundImg,
+  initialState: {
+    url: BackgroundImg
+  },
   reducers: {
     changeBackground: (state, action) => {
-      state = action.payload;
+      console.log(action.payload);
+      state.url = action.payload;
     },
   },
 });

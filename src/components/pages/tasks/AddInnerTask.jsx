@@ -4,19 +4,23 @@ import { styled } from "styled-components";
 import Buttonn from "../../UI/Button";
 import { Close, Edit } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { addInnerTask } from "../../store/slices/TaskSlice";
+import { addInnerTask, toggleInnerTask } from "../../store/slices/TaskSlice";
 
 const AddInnerTask = (props) => {
-  const { tasks } = useSelector((state) => state.task);
-  console.log(tasks);
+  const { tasks, searchInputValue } = useSelector((state) => state.task);
   const dispatch = useDispatch();
   const [value, setValue] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingValue, setEditingValue] = useState("");
 
+  const filteredTasks = tasks.filter((el) =>
+    el.title.toLowerCase().includes(searchInputValue.toLowerCase())
+  );
   const innerTaskValue = (e) => {
     setValue(e.target.value);
   };
 
-  const data = tasks.find((el) => el.id === props.id);
+  const data = filteredTasks.find((el) => el.id === props.id);
   const clickHandler = () => {
     const obj = {
       id: props.id,
@@ -28,14 +32,52 @@ const AddInnerTask = (props) => {
     setValue("");
   };
 
+  const editInnerTask = (id) => {
+    console.log(id);
+    setIsEditing(true);
+  };
+
+  const onchangeEditinText = (e) => {
+    setEditingValue(e.target.value);
+  };
+
+  const saveEditingValue = (id) => {
+    dispatch(toggleInnerTask({ editingValue, id, parentId: props.id }));
+    // const obj = {
+    //     id,
+    //     editingValue,
+    //     parentId: props.id
+    // }
+    setIsEditing(false);
+  };
+
   return (
     <Wrapper>
       <span>{props.title}</span>
       {data.innerTask.map((el) => (
-        <InnerTask draggable={true}>
-          <span>{el.innerTask}</span>
-          <span className="edit"><Edit /></span>
-        </InnerTask>
+        <>
+          {isEditing && (
+            <EditTask>
+              <textarea onChange={onchangeEditinText} cols="24" rows="3">
+                {el.innerTask}
+              </textarea>
+              <Buttonn
+                onClick={() => saveEditingValue(el.id)}
+                variant="contained"
+              >
+                <span>Сохранить</span>
+              </Buttonn>
+            </EditTask>
+          )}
+          {!isEditing && (
+            <InnerTask draggable={true}>
+              <span>{el.innerTask}</span>
+              <span onClick={() => editInnerTask(el.id)} className="edit">
+                <Edit />
+              </span>
+            </InnerTask>
+          )}
+        </>
       ))}
       {!props.textareaActive && (
         <ButtonInnerTask>
@@ -122,8 +164,15 @@ const InnerTask = styled.div`
     border-radius: 4px;
     display: flex;
     justify-content: center;
-    /* background-color: #2b2b2b; */
+    &:hover {
+      background-color: #2b2b2b;
+    }
   }
+`;
+
+const EditTask = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const ButtonInnerTask = styled.div`

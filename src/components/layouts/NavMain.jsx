@@ -2,8 +2,13 @@ import React from "react";
 import { styled } from "styled-components";
 import Buttonn from "../UI/Button";
 import DownArrowIcon from "../assets/icons/DownArrowIcon.webp";
+import { useNavigate } from "react-router-dom";
 
 const NavMain = () => {
+  const navigate = useNavigate()
+  const showMenu = () => {
+    navigate("menu")
+  }
   return (
     <Nav>
       <div className="firstCont">
@@ -115,6 +120,7 @@ const NavMain = () => {
         </div>
         <div>
           <svg
+          onClick={showMenu}
             width="24"
             height="24"
             viewBox="0 0 24 24"

@@ -8,11 +8,17 @@ import { useDispatch, useSelector } from "react-redux";
 import AddInnerTask from "./AddInnerTask";
 
 const AddTask = (props) => {
-  const { tasks } = useSelector((state) => state.task);
+  const { tasks, searchInputValue } = useSelector((state) => state.task);
   const dispatch = useDispatch();
-  console.log(tasks);
   const [value, setValue] = useState("");
   const [textareaActive, setTextareaActive] = useState(false);
+
+  const filteredTasks = tasks.filter((el) => 
+    el.title.toLowerCase().includes(searchInputValue.toLowerCase())
+  )
+
+  console.log(filteredTasks);
+  console.log(tasks);
 
   const clickHandler = (e) => {
     props.inputTrue();
@@ -52,7 +58,7 @@ const AddTask = (props) => {
 
   return (
     <>
-      {tasks.map((el) => (
+      {filteredTasks.map((el) => (
         <AddInnerTask
           showTextarea={showTextarea}
           blockTextarea={blockTextarea}
@@ -116,8 +122,10 @@ const WrapperTask = styled.div`
       props.state === false ? "rgba(255, 255, 255, 0.2)" : ""};
   }
   & span {
+    width: 16em;
     color: white;
     display: flex;
+    justify-content: center;
     align-items: center;
     transition: 0.3s;
   }

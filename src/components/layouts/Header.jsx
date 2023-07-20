@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { styled } from "styled-components";
 import Trello_logo from "../assets/icons/Trello_logo.svg.png";
 import Buttonn from "../UI/Button";
 import GoogleIcon from "../assets/icons/GoogleIcon.jpg";
 import DownArrowIcon from "../assets/icons/DownArrowIcon.webp";
 import CandyBox_Icon from "../assets/icons/CandyBox_Icon.png";
+import { useDispatch } from "react-redux";
+import { filterTask } from "../store/slices/TaskSlice";
 
 const Header = () => {
+  const dispatch = useDispatch();
+
+  const searchTask = (e) => {
+    dispatch(filterTask(e.target.value));
+  };
+
   return (
     <HeaderStyled>
       <nav>
@@ -47,7 +55,7 @@ const Header = () => {
           <svg filter="invert(70%)" width="24" height="24">
             <path d="M16.436 15.085l3.94 4.01a1 1 0 01-1.425 1.402l-3.938-4.006a7.5 7.5 0 111.423-1.406zM10.5 16a5.5 5.5 0 100-11 5.5 5.5 0 000 11z"></path>
           </svg>
-          <input type="text" placeholder="Поиск" />
+          <input onChange={searchTask} type="text" placeholder="Поиск" />
         </SearchInput>
         <span>
           <svg filter="invert(70%)" width="24" height="24">
