@@ -5,7 +5,7 @@ const Menu = () => {
   return (
     <MenuWrapper>
         <div>
-          
+          <h1>Салам Имо</h1>
         </div>
     </MenuWrapper>
   )
