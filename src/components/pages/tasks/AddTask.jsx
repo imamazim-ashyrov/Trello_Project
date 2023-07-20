@@ -5,16 +5,23 @@ import Button from "../../UI/Button";
 import { Close } from "@mui/icons-material";
 import { addTask } from "../../store/slices/TaskSlice";
 import { useDispatch, useSelector } from "react-redux";
+import AddInnerTask from "./AddInnerTask";
 
 const AddTask = (props) => {
   const { tasks } = useSelector((state) => state.task);
   const dispatch = useDispatch();
   console.log(tasks);
   const [value, setValue] = useState("");
+  const [textareaActive, setTextareaActive] = useState(false);
 
   const clickHandler = (e) => {
     props.inputTrue();
+    blockTextarea()
     e.stopPropagation();
+  };
+  const clickHandlerr = (e) => {
+    e.stopPropagation();
+    props.inputFalse();
   };
 
   const onChangeInput = (event) => {
@@ -22,18 +29,38 @@ const AddTask = (props) => {
   };
 
   const taskHandler = (e) => {
-    e.preventDefault();
     const task = {
       id: Math.random(),
       title: value,
       innerTask: [],
     };
-    // console.log(task);
-    dispatch(addTask(task));
+    if (value.trim().length > 0) {
+      dispatch(addTask(task));
+      props.inputFalse();
+    }
+    setValue("");
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const showTextarea = () => {
+    setTextareaActive(true);
+  };
+  const blockTextarea = () => {
+    setTextareaActive(false);
   };
 
   return (
     <>
+      {tasks.map((el) => (
+        <AddInnerTask
+          showTextarea={showTextarea}
+          blockTextarea={blockTextarea}
+          textareaActive={textareaActive}
+          title={el.title}
+          id = {el.id}
+        />
+      ))}
       <WrapperTask state={props.inputActive} onClick={clickHandler}>
         {!props.inputActive && (
           <span>
@@ -41,31 +68,28 @@ const AddTask = (props) => {
             Добавить список
           </span>
         )}
-        {tasks.map((el) => {
-          props.inputActive && (
-            <InputWithButton onSubmit={taskHandler}>
-              <input
-                onChange={onChangeInput}
-                placeholder="Ввести заголовок задачи"
-              />
-              <div>
-                <Button
-                  onClick={taskHandler}
-                  padding="4px 13px"
-                  fontSize="11px"
-                  variant="contained"
-                >
-                  Добавить список
-                </Button>
+        {props.inputActive && (
+          <InputWithButton onSubmit={taskHandler}>
+            <input
+              value={value}
+              onChange={onChangeInput}
+              placeholder="Ввести заголовок задачи"
+            />
+            <div>
+              <Button
+                onClick={taskHandler}
+                padding="4px 13px"
+                fontSize="11px"
+                variant="contained"
+              >
+                Добавить список
+              </Button>
+              <CloseInput onClick={clickHandlerr}>
                 <Close />
-              </div>
-            </InputWithButton>
-          );
-          <TitleTask>
-            <span>{el.title}</span>
-          </TitleTask>;
-        })}
-        {/* <AddInnerTask/> */}
+              </CloseInput>
+            </div>
+          </InputWithButton>
+        )}
       </WrapperTask>
     </>
   );
@@ -74,6 +98,8 @@ const AddTask = (props) => {
 export default AddTask;
 
 const WrapperTask = styled.div`
+  display: flex;
+  margin: 10px 10px 0 10px;
   background-color: ${(props) =>
     props.state === false ? "rgba(255, 255, 255, 0.4)" : "black"};
   width: 17em;
@@ -97,8 +123,12 @@ const WrapperTask = styled.div`
   }
 `;
 
-const TitleTask = styled.div`
-  border: 1px solid;
+const CloseInput = styled.div`
+  border-radius: 4px;
+  /* padding: 4px; */
+  &:hover {
+    background-color: #2e3133;
+  }
 `;
 
 const InputWithButton = styled.form`

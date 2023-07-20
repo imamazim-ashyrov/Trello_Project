@@ -9,13 +9,12 @@ const TaskSlice = createSlice({
   initialState,
   reducers: {
     addTask: ( state, action) => {
-      console.log(action);
       state.tasks = [...state.tasks, action.payload];
     },
     addInnerTask: (state, action) => {
       const { id, innerTask } = action.payload;
       const find = state.tasks.find((el) => el.id === id);
-      find.innerTask = [...find.innerTask, innerTask];
+      find.innerTask = [...find.innerTask, action.payload];
     },
   },
 });

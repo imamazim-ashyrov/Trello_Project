@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import AddTask from "./AddTask";
 import { styled } from "styled-components";
-import { useSelector } from "react-redux";
 
 const ListTasks = () => {
 
-  const {tasks} = useSelector(state => state.task)
   const [inputActive, setInputActive] = useState(false)
   console.log(inputActive);
 
@@ -22,7 +20,7 @@ const ListTasks = () => {
 
   return (
     <WrapperTasks onClick={clickHandler}>
-        <AddTask inputTrue = {inputTrue} inputActive={inputActive}/>
+        <AddTask inputFalse={inputFalse} inputTrue = {inputTrue} inputActive={inputActive}/>
     </WrapperTasks>
   );
 };
@@ -30,6 +28,8 @@ const ListTasks = () => {
 export default ListTasks;
 
 const WrapperTasks = styled.div`
+  display: flex;
+  align-items: flex-start;
   color: white;
   padding: 30px;
   height: calc(100% - 119px);
